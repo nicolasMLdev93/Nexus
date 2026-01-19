@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       comments.belongsTo(models.users, {
         foreignKey: "user_id",
       });
+      comments.belongsTo(models.posts, {
+        foreignKey: "post_id",
+      });
       comments.hasMany(models.comment_likes, {
         foreignKey: "comment_id",
       });
@@ -16,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   comments.init({
     content: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
+    post_id: DataTypes.INTEGER,
     likes_count: DataTypes.INTEGER
   }, {
     sequelize,
