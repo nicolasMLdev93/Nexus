@@ -1,4 +1,5 @@
 "use strict";
+const { use } = require("react");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class users extends Model {

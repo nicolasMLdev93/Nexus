@@ -5,6 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class followers extends Model {
     static associate(models) {
+      
     }
   }
   followers.init({
