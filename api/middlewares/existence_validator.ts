@@ -50,3 +50,28 @@ export const val_existanceUser_login = async (
       .json({ message: "Internal Server Error", success: false, error: error });
   }
 };
+
+// Validate existant user
+export const val_existanceUser_post = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { user_id } = req.body;
+  try {
+    const user = await users.findOne({ where: { id: user_id } });
+    if (!user) {
+      res.status(400).json({
+        error: `A user with the id ${user_id} not exists!`,
+        success: false,
+      });
+      return;
+    } else {
+      next();
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};

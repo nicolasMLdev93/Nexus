@@ -63,3 +63,19 @@ export const validate_loginUser: ValidationChain[] = [
     .isLength({ max: 20 })
     .withMessage("The max length of your password must be 20 char"),
 ];
+
+// Chain validator for create a new post
+export const validate_newPost: ValidationChain[] = [
+  body("content")
+    .notEmpty()
+    .withMessage("Content is required!")
+    .isString()
+    .withMessage("Content must be a string")
+    .isLength({ max: 200 })
+    .withMessage("The max length of your email must be 200 char"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer")
+];

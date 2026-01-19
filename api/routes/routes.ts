@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   validate_newUser,
   validate_loginUser,
+  validate_newPost,
 } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
@@ -12,11 +13,16 @@ const { validate_results } = require("../middlewares/validate_results");
 const {
   val_existanceUser_register,
   val_existanceUser_login,
+  val_existanceUser_post,
 } = require("../middlewares/existence_validator");
 // Validate token
 const { validate_token } = require("../middlewares/validate_token");
 // Controllers
-const { register_user, login_user } = require("../controllers/controllers");
+const {
+  register_user,
+  login_user,
+  create_post,
+} = require("../controllers/controllers");
 // Routes of the backend application //
 // Register new user on application
 router.post(
@@ -33,6 +39,14 @@ router.post(
   validate_results,
   val_existanceUser_login,
   login_user,
+);
+// Create new post
+router.post(
+  "/create_post",
+  validate_newPost,
+  validate_results,
+  val_existanceUser_post,
+  create_post,
 );
 
 module.exports = router;

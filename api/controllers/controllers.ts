@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const { users } = require("../../models");
+const { users, posts } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -46,7 +46,7 @@ export const login_user = async (
       res
         .status(500)
         .json({ error: "Your password is not valid!", success: false });
-        return
+      return;
     } else {
       const token = jwt.sign(
         {
@@ -65,6 +65,30 @@ export const login_user = async (
         },
       });
     }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Create new post
+export const create_post = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { content, user_id } = req.body;
+  try {
+    await posts.create({
+      content: content,
+      user_id: user_id,
+      likes_count: 0,
+      isPublic: true,
+      rePost_count: 0,
+    });
+    res
+      .status(200)
+      .json({ message: `User ${user_id} created a new post!`, success: true });
   } catch (error) {
     res
       .status(500)
