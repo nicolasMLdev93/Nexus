@@ -45,3 +45,21 @@ export const validate_newUser: ValidationChain[] = [
     .withMessage("Invalid role! Must be: admin or user")
     .default("user"),
 ];
+
+// Chain validator for login into an account
+export const validate_loginUser: ValidationChain[] = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is required!")
+    .isString()
+    .withMessage("Email must be a string")
+    .isLength({ max: 40 })
+    .withMessage("The max length of your email must be 100 char"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required!")
+    .isString()
+    .withMessage("Password must be a string")
+    .isLength({ max: 20 })
+    .withMessage("The max length of your password must be 20 char"),
+];

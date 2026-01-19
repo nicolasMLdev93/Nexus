@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_newUser = void 0;
+exports.validate_loginUser = exports.validate_newUser = void 0;
 const express_validator_1 = require("express-validator");
 // Chain validator for create a new user
 exports.validate_newUser = [
@@ -47,4 +47,21 @@ exports.validate_newUser = [
         .isIn(["admin", "user"])
         .withMessage("Invalid role! Must be: admin or user")
         .default("user"),
+];
+// Chain validator for login into an account
+exports.validate_loginUser = [
+    (0, express_validator_1.body)("email")
+        .notEmpty()
+        .withMessage("Email is required!")
+        .isString()
+        .withMessage("Email must be a string")
+        .isLength({ max: 40 })
+        .withMessage("The max length of your email must be 100 char"),
+    (0, express_validator_1.body)("password")
+        .notEmpty()
+        .withMessage("Password is required!")
+        .isString()
+        .withMessage("Password must be a string")
+        .isLength({ max: 20 })
+        .withMessage("The max length of your password must be 20 char"),
 ];

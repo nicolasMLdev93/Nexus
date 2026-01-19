@@ -4,10 +4,10 @@ import { Request, Response, NextFunction } from "express";
 export const validate_results = async (
   req: Request,
   res: Response,
-  next: NextFunction
-) => {
+  next: NextFunction,
+): Promise<void> => {
   try {
-    const errors = validationResult(req).array();
+    const errors = await validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({
         success: false,
@@ -23,7 +23,8 @@ export const validate_results = async (
       next();
     }
   } catch (error) {
-    console.error("Validation middleware error:", error);
-    res.status(500).json({ error: "Internal Server Error", success: false });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
   }
 };

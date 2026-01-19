@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 require("dotenv").config();
 const route = require('./routes/routes');
-const port = 3000;
+const port = process.env.JWT_PORT;
 const app = express();
 app.use(express.json());
 app.use(helmet());

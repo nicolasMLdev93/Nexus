@@ -4,7 +4,7 @@ exports.validate_results = void 0;
 const { validationResult } = require("express-validator");
 const validate_results = async (req, res, next) => {
     try {
-        const errors = validationResult(req).array();
+        const errors = await validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).json({
                 success: false,
@@ -22,8 +22,9 @@ const validate_results = async (req, res, next) => {
         }
     }
     catch (error) {
-        console.error("Validation middleware error:", error);
-        res.status(500).json({ error: "Internal Server Error", success: false });
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
     }
 };
 exports.validate_results = validate_results;
