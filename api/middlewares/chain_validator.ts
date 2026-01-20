@@ -128,3 +128,17 @@ export const validate_Comment_like: ValidationChain[] = [
     .isNumeric()
     .withMessage("user_id must be an integer"),
 ];
+
+// Chain validator for make a repost
+export const validate_rePost: ValidationChain[] = [
+  body("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+];

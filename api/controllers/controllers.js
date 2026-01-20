@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
-const { users, posts, post_likes, comments, comment_likes, } = require("../../models");
+exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
+const { users, posts, post_likes, comments, comment_likes, repost, } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // Register new user
@@ -155,3 +155,24 @@ const like_comment = async (req, res) => {
     }
 };
 exports.like_comment = like_comment;
+// Give a repost
+const create_repost = async (req, res) => {
+    const { post_id, user_id } = req.body;
+    try {
+        await posts.increment("rePost_count", { where: { id: post_id } });
+        await repost.create({
+            post_id: post_id,
+            user_id: user_id,
+        });
+        res.status(200).json({
+            message: `User ${user_id} repost the post ${post_id}!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.create_repost = create_repost;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
+exports.validate_rePost = exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
 const express_validator_1 = require("express-validator");
 // Chain validator for create a new user
 exports.validate_newUser = [
@@ -120,6 +120,19 @@ exports.validate_Comment_like = [
         .withMessage("comment_id is required!")
         .isNumeric()
         .withMessage("comment_id must be an integer"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+];
+// Chain validator for make a repost
+exports.validate_rePost = [
+    (0, express_validator_1.body)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
     (0, express_validator_1.body)("user_id")
         .notEmpty()
         .withMessage("user_id is required!")

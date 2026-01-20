@@ -5,6 +5,7 @@ const {
   post_likes,
   comments,
   comment_likes,
+  repost,
 } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -162,6 +163,29 @@ export const like_comment = async (
     });
     res.status(200).json({
       message: `User ${user_id} liked the comment ${comment_id}!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Give a repost
+export const create_repost = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id, user_id } = req.body;
+  try {
+    await posts.increment("rePost_count", { where: { id: post_id } });
+    await repost.create({
+      post_id: post_id,
+      user_id: user_id,
+    });
+    res.status(200).json({
+      message: `User ${user_id} repost the post ${post_id}!`,
       success: true,
     });
   } catch (error) {

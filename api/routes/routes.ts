@@ -9,6 +9,7 @@ const {
   validate_Post_like,
   validate_newComment,
   validate_Comment_like,
+  validate_rePost,
 } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
@@ -30,6 +31,7 @@ const {
   like_post,
   create_comment,
   like_comment,
+  create_repost,
 } = require("../controllers/controllers");
 // Routes of the backend application //
 // Register new user on application
@@ -85,6 +87,27 @@ router.post(
   validate_token,
   like_comment,
 );
+// Make a repost
+router.post(
+  "/create_rePost",
+  validate_rePost,
+  validate_results,
+  val_existanceUser_post,
+  validate_token,
+  create_repost,
+);
+// Get posts by user_id
+
+// Get likes by post_id
+
+// Get comments by post_id
+
+// Get likes by comment_id
+
+// Get reposts by user_id
+
+// Get reposts by post_id
+
 
 module.exports = router;
 export {};
