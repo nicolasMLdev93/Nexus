@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_loginUser = exports.validate_newUser = void 0;
+exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
 const express_validator_1 = require("express-validator");
 // Chain validator for create a new user
 exports.validate_newUser = [
@@ -64,4 +64,65 @@ exports.validate_loginUser = [
         .withMessage("Password must be a string")
         .isLength({ max: 20 })
         .withMessage("The max length of your password must be 20 char"),
+];
+// Chain validator for create a new post
+exports.validate_newPost = [
+    (0, express_validator_1.body)("content")
+        .notEmpty()
+        .withMessage("Content is required!")
+        .isString()
+        .withMessage("Content must be a string")
+        .isLength({ max: 200 })
+        .withMessage("The max length of your email must be 200 char"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+];
+// Chain validator for make a like to a post
+exports.validate_Post_like = [
+    (0, express_validator_1.body)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+];
+// Chain validator for create a new comment in a post
+exports.validate_newComment = [
+    (0, express_validator_1.body)("content")
+        .notEmpty()
+        .withMessage("Content is required!")
+        .isString()
+        .withMessage("Content must be a string")
+        .isLength({ max: 200 })
+        .withMessage("The max length of your email must be 200 char"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+    (0, express_validator_1.body)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
+];
+// Chain validator for make a like to a post
+exports.validate_Comment_like = [
+    (0, express_validator_1.body)("comment_id")
+        .notEmpty()
+        .withMessage("comment_id is required!")
+        .isNumeric()
+        .withMessage("comment_id must be an integer"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
 ];

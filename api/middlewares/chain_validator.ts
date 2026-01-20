@@ -77,5 +77,54 @@ export const validate_newPost: ValidationChain[] = [
     .notEmpty()
     .withMessage("user_id is required!")
     .isNumeric()
-    .withMessage("user_id must be an integer")
+    .withMessage("user_id must be an integer"),
+];
+
+// Chain validator for make a like to a post
+export const validate_Post_like: ValidationChain[] = [
+  body("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+];
+
+// Chain validator for create a new comment in a post
+export const validate_newComment: ValidationChain[] = [
+  body("content")
+    .notEmpty()
+    .withMessage("Content is required!")
+    .isString()
+    .withMessage("Content must be a string")
+    .isLength({ max: 200 })
+    .withMessage("The max length of your email must be 200 char"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+  body("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+];
+
+// Chain validator for make a like to a post
+export const validate_Comment_like: ValidationChain[] = [
+  body("comment_id")
+    .notEmpty()
+    .withMessage("comment_id is required!")
+    .isNumeric()
+    .withMessage("comment_id must be an integer"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
 ];

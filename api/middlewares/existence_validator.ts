@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { users } = require("../../models");
+const { users, posts, comments } = require("../../models");
 
 // Validate existance user for register
 export const val_existanceUser_register = async (
@@ -63,6 +63,56 @@ export const val_existanceUser_post = async (
     if (!user) {
       res.status(400).json({
         error: `A user with the id ${user_id} not exists!`,
+        success: false,
+      });
+      return;
+    } else {
+      next();
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Validate existant post
+export const val_existance_post = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { post_id } = req.body;
+  try {
+    const post = await posts.findOne({ where: { id: post_id } });
+    if (!post) {
+      res.status(400).json({
+        error: `A post with the id ${post_id} not exists!`,
+        success: false,
+      });
+      return;
+    } else {
+      next();
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Validate existant commnet
+export const val_existance_comment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { comment_id } = req.body;
+  try {
+    const comment = await comments.findOne({ where: { id: comment_id } });
+    if (!comment) {
+      res.status(400).json({
+        error: `A comment with the id ${comment_id} not exists!`,
         success: false,
       });
       return;

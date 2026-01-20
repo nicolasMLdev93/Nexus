@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-const { users, posts } = require("../../models");
+const {
+  users,
+  posts,
+  post_likes,
+  comments,
+  comment_likes,
+} = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -89,6 +95,75 @@ export const create_post = async (
     res
       .status(200)
       .json({ message: `User ${user_id} created a new post!`, success: true });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Give a like to a post
+export const like_post = async (req: Request, res: Response): Promise<void> => {
+  const { post_id, user_id } = req.body;
+  try {
+    await posts.increment("likes_count", { where: { id: post_id } });
+    await post_likes.create({
+      post_id: post_id,
+      user_id: user_id,
+    });
+    res.status(200).json({
+      message: `User ${user_id} liked the post ${post_id}!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Create new comment
+export const create_comment = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { content, user_id, post_id } = req.body;
+  try {
+    await comments.create({
+      content: content,
+      user_id: user_id,
+      post_id: post_id,
+      likes_count: 0,
+    });
+    res.status(200).json({
+      message: `User ${user_id} commented a the post ${post_id}!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Give a like to a commnet
+export const like_comment = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { comment_id, user_id } = req.body;
+  try {
+    await comments.increment("likes_count", {
+      where: { id: comment_id },
+    });
+    await comment_likes.create({
+      comment_id: comment_id,
+      user_id: user_id,
+    });
+    res.status(200).json({
+      message: `User ${user_id} liked the comment ${comment_id}!`,
+      success: true,
+    });
   } catch (error) {
     res
       .status(500)
