@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
+exports.unlike_comment = exports.unlike_post = exports.get_userReposts = exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
 const { users, posts, post_likes, comments, comment_likes, repost, } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -274,3 +274,72 @@ const get_commentLikes = async (req, res) => {
     }
 };
 exports.get_commentLikes = get_commentLikes;
+// Get all reposts by user
+const get_userReposts = async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const reposts = await repost.findAll({
+            where: { user_id: user_id },
+        });
+        if (reposts.length === 0) {
+            res.status(200).json({
+                message: `The user ${user_id} dont have reposts yet!`,
+                success: true,
+            });
+        }
+        res.status(200).json({
+            reposts: reposts,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.get_userReposts = get_userReposts;
+// Unlike post
+const unlike_post = async (req, res) => {
+    const { post_id, user_id } = req.body;
+    try {
+        await posts.decrement("likes_count", { where: { id: post_id } });
+        await post_likes.destroy({
+            where: {
+                id: user_id,
+            },
+        });
+        res.status(200).json({
+            message: `The post ${post_id} has been unliked!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.unlike_post = unlike_post;
+// Unlike comment
+const unlike_comment = async (req, res) => {
+    const { comment_id, user_id } = req.body;
+    try {
+        await comments.decrement("likes_count", { where: { id: comment_id } });
+        await comment_likes.destroy({
+            where: {
+                id: user_id,
+            },
+        });
+        res.status(200).json({
+            message: `The comment ${comment_id} has been unliked!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.unlike_comment = unlike_comment;

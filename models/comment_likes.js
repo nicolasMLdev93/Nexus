@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
        comment_likes.belongsTo(models.users, {
         foreignKey: "user_id",
       });
-      comment_likes.belongsTo(models.posts, {
-        foreignKey: "post_id",
+      comment_likes.belongsTo(models.comments, {
+        foreignKey: "comment_id",
       });
     }
   }

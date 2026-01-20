@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_LikeComment = exports.validate_getLike = exports.validate_getComment = exports.validate_getPost = exports.validate_rePost = exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
+exports.validate_unlikeComment = exports.validate_unlikePost = exports.validate_repostUser = exports.validate_LikeComment = exports.validate_getLike = exports.validate_getComment = exports.validate_getPost = exports.validate_rePost = exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
 const express_validator_1 = require("express-validator");
 // Chain validator for create a new user
 exports.validate_newUser = [
@@ -170,4 +170,38 @@ exports.validate_LikeComment = [
         .withMessage("comment_id is required!")
         .isNumeric()
         .withMessage("comment_id must be an integer"),
+];
+// Chain valdiator for get reposts by user
+exports.validate_repostUser = [
+    (0, express_validator_1.param)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+];
+// Chain valdiator for unlike a post
+exports.validate_unlikePost = [
+    (0, express_validator_1.body)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
+];
+// Chain valdiator for unlike a commnet
+exports.validate_unlikeComment = [
+    (0, express_validator_1.body)("comment_id")
+        .notEmpty()
+        .withMessage("comment_id is required!")
+        .isNumeric()
+        .withMessage("comment_id must be an integer"),
+    (0, express_validator_1.body)("user_id")
+        .notEmpty()
+        .withMessage("user_id is required!")
+        .isNumeric()
+        .withMessage("user_id must be an integer"),
 ];

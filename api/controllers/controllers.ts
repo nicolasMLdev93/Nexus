@@ -282,11 +282,11 @@ export const get_commentLikes = async (
   const { comment_id } = req.params;
   try {
     const like_c = await comment_likes.findAll({
-      where: { comment_id: comment_id},
+      where: { comment_id: comment_id },
     });
     if (like_c.length === 0) {
       res.status(200).json({
-        message: `The comment ${comment_id } dont have likes yet!`,
+        message: `The comment ${comment_id} dont have likes yet!`,
         success: true,
       });
     }
@@ -301,3 +301,77 @@ export const get_commentLikes = async (
   }
 };
 
+// Get all reposts by user
+export const get_userReposts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { user_id } = req.params;
+  try {
+    const reposts = await repost.findAll({
+      where: { user_id: user_id },
+    });
+    if (reposts.length === 0) {
+      res.status(200).json({
+        message: `The user ${user_id} dont have reposts yet!`,
+        success: true,
+      });
+    }
+    res.status(200).json({
+      reposts: reposts,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Unlike post
+export const unlike_post = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id, user_id } = req.body;
+  try {
+    await posts.decrement("likes_count", { where: { id: post_id } });
+    await post_likes.destroy({
+      where: {
+        id: user_id,
+      },
+    });
+    res.status(200).json({
+      message: `The post ${post_id} has been unliked!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Unlike comment
+export const unlike_comment = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { comment_id, user_id } = req.body;
+  try {
+    await comments.decrement("likes_count", { where: { id: comment_id } });
+    await comment_likes.destroy({
+      where: {
+        id: user_id,
+      },
+    });
+    res.status(200).json({
+      message: `The comment ${comment_id} has been unliked!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};

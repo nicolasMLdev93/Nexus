@@ -178,3 +178,40 @@ export const validate_LikeComment: ValidationChain[] = [
     .isNumeric()
     .withMessage("comment_id must be an integer"),
 ];
+
+// Chain valdiator for get reposts by user
+export const validate_repostUser: ValidationChain[] = [
+  param("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+];
+
+// Chain valdiator for unlike a post
+export const validate_unlikePost: ValidationChain[] = [
+  body("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+];
+
+// Chain valdiator for unlike a commnet
+export const validate_unlikeComment: ValidationChain[] = [
+  body("comment_id")
+    .notEmpty()
+    .withMessage("comment_id is required!")
+    .isNumeric()
+    .withMessage("comment_id must be an integer"),
+  body("user_id")
+    .notEmpty()
+    .withMessage("user_id is required!")
+    .isNumeric()
+    .withMessage("user_id must be an integer"),
+];

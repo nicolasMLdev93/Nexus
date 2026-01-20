@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
 // Chain validators
-const { validate_newUser, validate_loginUser, validate_newPost, validate_Post_like, validate_newComment, validate_Comment_like, validate_rePost, validate_getPost, validate_getComment, validate_getLike, validate_LikeComment, } = require("../middlewares/chain_validator");
+const { validate_newUser, validate_loginUser, validate_newPost, validate_Post_like, validate_newComment, validate_Comment_like, validate_rePost, validate_getPost, validate_getComment, validate_getLike, validate_LikeComment, validate_repostUser, validate_unlikePost, validate_unlikeComment, } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
 // Validate existant objects
@@ -11,7 +11,7 @@ const { val_existanceUser_register, val_existanceUser_login, val_existanceUser_p
 // Validate token
 const { validate_token } = require("../middlewares/validate_token");
 // Controllers
-const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, } = require("../controllers/controllers");
+const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, get_userReposts, unlike_post, unlike_comment, } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
 // Register new user on application
@@ -37,11 +37,13 @@ router.get("/comments_byPosts/:post_id", validate_getComment, validate_results, 
 // Get likes by comment_id
 router.get("/likes_byComment/:comment_id", validate_LikeComment, validate_results, val_existance_commentParams, validate_token, get_commentLikes);
 // Get reposts by user_id
-// Get reposts by post_id
-// Delete a post
+router.get("/repost_byUser/:user_id", validate_repostUser, validate_results, val_existanceUser, validate_token, get_userReposts);
+// Unlike a post
+router.post("/unlike_post", validate_unlikePost, validate_results, val_existance_post, validate_token, unlike_post);
+// Unlike a comment
+router.post("/unlike_comment", validate_unlikeComment, validate_results, val_existance_comment, validate_token, unlike_comment);
+// Become a non-public post
 // Delete a comment
 // Delete a repost
-// Unlike a post
-// Unlike a comment
-// Become a non-public post
+// Delete a post
 module.exports = router;

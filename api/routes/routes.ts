@@ -14,6 +14,9 @@ const {
   validate_getComment,
   validate_getLike,
   validate_LikeComment,
+  validate_repostUser,
+  validate_unlikePost,
+  validate_unlikeComment,
 } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
@@ -43,6 +46,9 @@ const {
   get_postComments,
   get_postLikes,
   get_commentLikes,
+  get_userReposts,
+  unlike_post,
+  unlike_comment,
 } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
@@ -145,20 +151,37 @@ router.get(
   get_commentLikes,
 );
 // Get reposts by user_id
-
-// Get reposts by post_id
-
-// Delete a post
-
+router.get(
+  "/repost_byUser/:user_id",
+  validate_repostUser,
+  validate_results,
+  val_existanceUser,
+  validate_token,
+  get_userReposts,
+);
+// Unlike a post
+router.post(
+  "/unlike_post",
+  validate_unlikePost,
+  validate_results,
+  val_existance_post,
+  validate_token,
+  unlike_post,
+);
+// Unlike a comment
+router.post(
+  "/unlike_comment",
+  validate_unlikeComment,
+  validate_results,
+  val_existance_comment,
+  validate_token,
+  unlike_comment,
+);
 // Delete a comment
 
 // Delete a repost
 
-// Unlike a post
-
-// Unlike a comment
-
-// Become a non-public post
+// Delete a post
 
 module.exports = router;
 export {};
