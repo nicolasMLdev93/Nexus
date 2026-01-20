@@ -194,3 +194,110 @@ export const create_repost = async (
       .json({ message: "Internal Server Error", success: false, error: error });
   }
 };
+
+// Get all post by user_id
+export const get_userPosts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { user_id } = req.params;
+  try {
+    const user_posts = await posts.findAll({ where: { user_id: user_id } });
+    if (user_posts.length === 0) {
+      res.status(200).json({
+        message: `The user ${user_id} dont have posts yet!`,
+        success: true,
+      });
+    }
+    res.status(200).json({
+      posts: user_posts,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Get all comments by post_id
+export const get_postComments = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id } = req.params;
+  try {
+    const comment_posts = await comments.findAll({
+      where: { post_id: post_id },
+    });
+    if (comment_posts.length === 0) {
+      res.status(200).json({
+        message: `The post ${post_id} dont have comments yet!`,
+        success: true,
+      });
+    }
+    res.status(200).json({
+      comments: comment_posts,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Get all likes by post_id
+export const get_postLikes = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id } = req.params;
+  try {
+    const like_posts = await post_likes.findAll({
+      where: { post_id: post_id },
+    });
+    if (like_posts.length === 0) {
+      res.status(200).json({
+        message: `The post ${post_id} dont have likes yet!`,
+        success: true,
+      });
+    }
+    res.status(200).json({
+      likes: like_posts,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Get all likes by comment_id
+export const get_commentLikes = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { comment_id } = req.params;
+  try {
+    const like_c = await comment_likes.findAll({
+      where: { comment_id: comment_id},
+    });
+    if (like_c.length === 0) {
+      res.status(200).json({
+        message: `The comment ${comment_id } dont have likes yet!`,
+        success: true,
+      });
+    }
+    res.status(200).json({
+      likes: like_c,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
