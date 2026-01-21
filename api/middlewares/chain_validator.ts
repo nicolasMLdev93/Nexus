@@ -215,3 +215,30 @@ export const validate_unlikeComment: ValidationChain[] = [
     .isNumeric()
     .withMessage("user_id must be an integer"),
 ];
+
+// Chain valdiator delete comment
+export const validate_deleteComment: ValidationChain[] = [
+  param("comment_id")
+    .notEmpty()
+    .withMessage("comment_id is required!")
+    .isNumeric()
+    .withMessage("comment_id must be an integer"),
+];
+
+// Chain valdiator delete re-post
+export const validate_deleteRepost: ValidationChain[] = [
+  param("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+];
+
+// Chain valdiator delete post
+export const validate_deletePost: ValidationChain[] = [
+  param("post_id")
+    .notEmpty()
+    .withMessage("post_id is required!")
+    .isNumeric()
+    .withMessage("post_id must be an integer"),
+];

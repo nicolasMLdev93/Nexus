@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.val_existance_commentParams = exports.val_existance_postParams = exports.val_existanceUser = exports.val_existance_comment = exports.val_existance_post = exports.val_existanceUser_post = exports.val_existanceUser_login = exports.val_existanceUser_register = void 0;
-const { users, posts, comments } = require("../../models");
+exports.val_existance_repostParams = exports.val_existance_commentParams = exports.val_existance_postParams = exports.val_existanceUser = exports.val_existance_comment = exports.val_existance_post = exports.val_existanceUser_post = exports.val_existanceUser_login = exports.val_existanceUser_register = void 0;
+const { users, posts, comments, repost } = require("../../models");
 // Validate existance user for register
 const val_existanceUser_register = async (req, res, next) => {
     const { email } = req.body;
@@ -163,7 +163,7 @@ const val_existance_postParams = async (req, res, next) => {
     }
 };
 exports.val_existance_postParams = val_existance_postParams;
-// Validate existant commnet
+// Validate existant comment
 const val_existance_commentParams = async (req, res, next) => {
     const { comment_id } = req.params;
     try {
@@ -186,3 +186,26 @@ const val_existance_commentParams = async (req, res, next) => {
     }
 };
 exports.val_existance_commentParams = val_existance_commentParams;
+// Validate existant re-post
+const val_existance_repostParams = async (req, res, next) => {
+    const { post_id } = req.params;
+    try {
+        const repost_res = await repost.findOne({ where: { id: post_id } });
+        if (!repost_res) {
+            res.status(400).json({
+                error: `A repost with post-id ${post_id} not exists!`,
+                success: false,
+            });
+            return;
+        }
+        else {
+            next();
+        }
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.val_existance_repostParams = val_existance_repostParams;

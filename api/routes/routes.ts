@@ -17,6 +17,9 @@ const {
   validate_repostUser,
   validate_unlikePost,
   validate_unlikeComment,
+  validate_deleteComment,
+  validate_deleteRepost,
+  validate_deletePost,
 } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
@@ -30,6 +33,7 @@ const {
   val_existanceUser,
   val_existance_postParams,
   val_existance_commentParams,
+  val_existance_repostParams,
 } = require("../middlewares/existence_validator");
 // Validate token
 const { validate_token } = require("../middlewares/validate_token");
@@ -49,6 +53,9 @@ const {
   get_userReposts,
   unlike_post,
   unlike_comment,
+  delete_comment,
+  delete_repost,
+  delete_post,
 } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
@@ -178,10 +185,32 @@ router.post(
   unlike_comment,
 );
 // Delete a comment
-
+router.delete(
+  "/delete_comment/:comment_id ",
+  validate_deleteComment,
+  validate_results,
+  val_existance_commentParams,
+  validate_token,
+  delete_comment,
+);
 // Delete a repost
-
+router.delete(
+  "/delete_repost/:post_id",
+  validate_deleteRepost,
+  validate_results,
+  val_existance_repostParams,
+  validate_token,
+  delete_repost,
+);
 // Delete a post
+router.delete(
+  "/delete_post/:post_id",
+  validate_deletePost,
+  validate_results,
+  val_existance_postParams,
+  validate_token,
+  delete_post,
+);
 
 module.exports = router;
 export {};

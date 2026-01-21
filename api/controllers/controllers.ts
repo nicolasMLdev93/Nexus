@@ -375,3 +375,102 @@ export const unlike_comment = async (
       .json({ message: "Internal Server Error", success: false, error: error });
   }
 };
+
+// Delete comment
+export const delete_comment = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { comment_id } = req.body;
+  try {
+    await comment_likes.destroy({
+      where: {
+        comment_id: comment_id,
+      },
+    });
+    await comments.destroy({
+      where: {
+        id: comment_id,
+      },
+    });
+    res.status(200).json({
+      message: `The comment ${comment_id} has been deleted!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Delete re-post
+export const delete_repost = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id } = req.body;
+  try {
+    await repost.destroy({
+      where: {
+        post_id: post_id,
+      },
+    });
+    res.status(200).json({
+      message: `The re-post of post ${post_id} has been deleted!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Delete post
+export const delete_post = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { post_id } = req.body;
+  try {
+    await repost.destroy({
+      where: {
+        post_id: post_id,
+      },
+    });
+    const id_comment = await comments.findOne({
+      where: {
+        post_id: post_id,
+      },
+    });
+    await comment_likes.destroy({
+      where: {
+        comment_id: id_comment.id,
+      },
+    });
+    await comments.destroy({
+      where: {
+        post_id: post_id,
+      },
+    });
+    await post_likes.destroy({
+      where: {
+        post_id: post_id,
+      },
+    });
+    await posts.destroy({
+      where: {
+        id: post_id,
+      },
+    });
+    res.status(200).json({
+      message: `The post ${post_id} has been deleted!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};

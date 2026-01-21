@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-const { users, posts, comments } = require("../../models");
+const { users, posts, comments,repost } = require("../../models");
 
 // Validate existance user for register
 export const val_existanceUser_register = async (
@@ -176,7 +176,7 @@ export const val_existance_postParams = async (
   }
 };
 
-// Validate existant commnet
+// Validate existant comment
 export const val_existance_commentParams = async (
   req: Request,
   res: Response,
@@ -188,6 +188,31 @@ export const val_existance_commentParams = async (
     if (!comment) {
       res.status(400).json({
         error: `A comment with the id ${comment_id} not exists!`,
+        success: false,
+      });
+      return;
+    } else {
+      next();
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Validate existant re-post
+export const val_existance_repostParams = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { post_id } = req.params;
+  try {
+    const repost_res = await repost.findOne({ where: { id: post_id } });
+    if (!repost_res) {
+      res.status(400).json({
+        error: `A repost with post-id ${post_id} not exists!`,
         success: false,
       });
       return;

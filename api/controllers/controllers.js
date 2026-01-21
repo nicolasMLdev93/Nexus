@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unlike_comment = exports.unlike_post = exports.get_userReposts = exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
+exports.delete_post = exports.delete_repost = exports.delete_comment = exports.unlike_comment = exports.unlike_post = exports.get_userReposts = exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
 const { users, posts, post_likes, comments, comment_likes, repost, } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -343,3 +343,96 @@ const unlike_comment = async (req, res) => {
     }
 };
 exports.unlike_comment = unlike_comment;
+// Delete comment
+const delete_comment = async (req, res) => {
+    const { comment_id } = req.body;
+    try {
+        await comment_likes.destroy({
+            where: {
+                comment_id: comment_id,
+            },
+        });
+        await comments.destroy({
+            where: {
+                id: comment_id,
+            },
+        });
+        res.status(200).json({
+            message: `The comment ${comment_id} has been deleted!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.delete_comment = delete_comment;
+// Delete re-post
+const delete_repost = async (req, res) => {
+    const { post_id } = req.body;
+    try {
+        await repost.destroy({
+            where: {
+                post_id: post_id,
+            },
+        });
+        res.status(200).json({
+            message: `The re-post of post ${post_id} has been deleted!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.delete_repost = delete_repost;
+// Delete post
+const delete_post = async (req, res) => {
+    const { post_id } = req.body;
+    try {
+        await repost.destroy({
+            where: {
+                post_id: post_id,
+            },
+        });
+        const id_comment = await comments.findOne({
+            where: {
+                post_id: post_id,
+            },
+        });
+        await comment_likes.destroy({
+            where: {
+                comment_id: id_comment.id,
+            },
+        });
+        await comments.destroy({
+            where: {
+                post_id: post_id,
+            },
+        });
+        await post_likes.destroy({
+            where: {
+                post_id: post_id,
+            },
+        });
+        await posts.destroy({
+            where: {
+                id: post_id,
+            },
+        });
+        res.status(200).json({
+            message: `The post ${post_id} has been deleted!`,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.delete_post = delete_post;

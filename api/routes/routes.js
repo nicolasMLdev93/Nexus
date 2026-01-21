@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
 // Chain validators
-const { validate_newUser, validate_loginUser, validate_newPost, validate_Post_like, validate_newComment, validate_Comment_like, validate_rePost, validate_getPost, validate_getComment, validate_getLike, validate_LikeComment, validate_repostUser, validate_unlikePost, validate_unlikeComment, } = require("../middlewares/chain_validator");
+const { validate_newUser, validate_loginUser, validate_newPost, validate_Post_like, validate_newComment, validate_Comment_like, validate_rePost, validate_getPost, validate_getComment, validate_getLike, validate_LikeComment, validate_repostUser, validate_unlikePost, validate_unlikeComment, validate_deleteComment, validate_deleteRepost, validate_deletePost, } = require("../middlewares/chain_validator");
 // Validate results
 const { validate_results } = require("../middlewares/validate_results");
 // Validate existant objects
-const { val_existanceUser_register, val_existanceUser_login, val_existanceUser_post, val_existance_post, val_existance_comment, val_existanceUser, val_existance_postParams, val_existance_commentParams, } = require("../middlewares/existence_validator");
+const { val_existanceUser_register, val_existanceUser_login, val_existanceUser_post, val_existance_post, val_existance_comment, val_existanceUser, val_existance_postParams, val_existance_commentParams, val_existance_repostParams, } = require("../middlewares/existence_validator");
 // Validate token
 const { validate_token } = require("../middlewares/validate_token");
 // Controllers
-const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, get_userReposts, unlike_post, unlike_comment, } = require("../controllers/controllers");
+const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, get_userReposts, unlike_post, unlike_comment, delete_comment, delete_repost, delete_post, } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
 // Register new user on application
@@ -42,8 +42,10 @@ router.get("/repost_byUser/:user_id", validate_repostUser, validate_results, val
 router.post("/unlike_post", validate_unlikePost, validate_results, val_existance_post, validate_token, unlike_post);
 // Unlike a comment
 router.post("/unlike_comment", validate_unlikeComment, validate_results, val_existance_comment, validate_token, unlike_comment);
-// Become a non-public post
 // Delete a comment
+router.delete("/delete_comment/:comment_id ", validate_deleteComment, validate_results, val_existance_commentParams, validate_token, delete_comment);
 // Delete a repost
+router.delete("/delete_repost/:post_id", validate_deleteRepost, validate_results, val_existance_repostParams, validate_token, delete_repost);
 // Delete a post
+router.delete("/delete_post/:post_id", validate_deletePost, validate_results, val_existance_postParams, validate_token, delete_post);
 module.exports = router;

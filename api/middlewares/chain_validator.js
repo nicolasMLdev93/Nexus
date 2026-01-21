@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate_unlikeComment = exports.validate_unlikePost = exports.validate_repostUser = exports.validate_LikeComment = exports.validate_getLike = exports.validate_getComment = exports.validate_getPost = exports.validate_rePost = exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
+exports.validate_deletePost = exports.validate_deleteRepost = exports.validate_deleteComment = exports.validate_unlikeComment = exports.validate_unlikePost = exports.validate_repostUser = exports.validate_LikeComment = exports.validate_getLike = exports.validate_getComment = exports.validate_getPost = exports.validate_rePost = exports.validate_Comment_like = exports.validate_newComment = exports.validate_Post_like = exports.validate_newPost = exports.validate_loginUser = exports.validate_newUser = void 0;
 const express_validator_1 = require("express-validator");
 // Chain validator for create a new user
 exports.validate_newUser = [
@@ -204,4 +204,28 @@ exports.validate_unlikeComment = [
         .withMessage("user_id is required!")
         .isNumeric()
         .withMessage("user_id must be an integer"),
+];
+// Chain valdiator delete comment
+exports.validate_deleteComment = [
+    (0, express_validator_1.param)("comment_id")
+        .notEmpty()
+        .withMessage("comment_id is required!")
+        .isNumeric()
+        .withMessage("comment_id must be an integer"),
+];
+// Chain valdiator delete re-post
+exports.validate_deleteRepost = [
+    (0, express_validator_1.param)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
+];
+// Chain valdiator delete post
+exports.validate_deletePost = [
+    (0, express_validator_1.param)("post_id")
+        .notEmpty()
+        .withMessage("post_id is required!")
+        .isNumeric()
+        .withMessage("post_id must be an integer"),
 ];
