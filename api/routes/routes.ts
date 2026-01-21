@@ -56,6 +56,7 @@ const {
   delete_comment,
   delete_repost,
   delete_post,
+  get_Posts,
 } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
@@ -211,6 +212,8 @@ router.delete(
   validate_token,
   delete_post,
 );
+// Get all posts
+router.get("/posts", get_Posts);
 
 module.exports = router;
 export {};

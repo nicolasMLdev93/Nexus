@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_post = exports.delete_repost = exports.delete_comment = exports.unlike_comment = exports.unlike_post = exports.get_userReposts = exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
+exports.get_Posts = exports.delete_post = exports.delete_repost = exports.delete_comment = exports.unlike_comment = exports.unlike_post = exports.get_userReposts = exports.get_commentLikes = exports.get_postLikes = exports.get_postComments = exports.get_userPosts = exports.create_repost = exports.like_comment = exports.create_comment = exports.like_post = exports.create_post = exports.login_user = exports.register_user = void 0;
 const { users, posts, post_likes, comments, comment_likes, repost, } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -35,10 +35,9 @@ exports.register_user = register_user;
 const login_user = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user_result = await users.findOne({ where: { email: email } });
-        const hash_password = user_result.password;
-        const checked_password = bcrypt.compare(password, hash_password);
-        if (!checked_password) {
+        const result = await users.findOne({ where: { email: email } });
+        const match = await bcrypt.compare(password, result.password);
+        if (!match) {
             res
                 .status(500)
                 .json({ error: "Your password is not valid!", success: false });
@@ -46,16 +45,16 @@ const login_user = async (req, res) => {
         }
         else {
             const token = jwt.sign({
-                data: user_result.id,
+                data: result.id,
             }, process.env.JWT_SECRET);
             res.status(200).json({
-                message: `Welcome ${user_result.name}`,
+                message: `Welcome ${result.name}`,
                 token: token,
                 success: true,
                 user: {
-                    id: user_result.id,
-                    email: user_result.email,
-                    role: user_result.role,
+                    id: result.id,
+                    email: result.email,
+                    role: result.role,
                 },
             });
         }
@@ -436,3 +435,25 @@ const delete_post = async (req, res) => {
     }
 };
 exports.delete_post = delete_post;
+// Get all posts
+const get_Posts = async (req, res) => {
+    try {
+        const posts_result = await posts.findAll();
+        if (posts_result.length === 0) {
+            res.status(200).json({
+                message: 'There are not posts in database',
+                success: true,
+            });
+        }
+        res.status(200).json({
+            posts: posts_result,
+            success: true,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Internal Server Error", success: false, error: error });
+    }
+};
+exports.get_Posts = get_Posts;

@@ -46,10 +46,9 @@ export const login_user = async (
 ): Promise<void> => {
   const { email, password } = req.body;
   try {
-    const user_result = await users.findOne({ where: { email: email } });
-    const hash_password = user_result.password;
-    const checked_password: boolean = bcrypt.compare(password, hash_password);
-    if (!checked_password) {
+    const result = await users.findOne({ where: { email: email } });
+    const match = await bcrypt.compare(password, result.password);
+    if (!match) {
       res
         .status(500)
         .json({ error: "Your password is not valid!", success: false });
@@ -57,18 +56,18 @@ export const login_user = async (
     } else {
       const token = jwt.sign(
         {
-          data: user_result.id,
+          data: result.id,
         },
         process.env.JWT_SECRET,
       );
       res.status(200).json({
-        message: `Welcome ${user_result.name}`,
+        message: `Welcome ${result.name}`,
         token: token,
         success: true,
         user: {
-          id: user_result.id,
-          email: user_result.email,
-          role: user_result.role,
+          id:result.id,
+          email:result.email,
+          role:result.role,
         },
       });
     }
@@ -466,6 +465,30 @@ export const delete_post = async (
     });
     res.status(200).json({
       message: `The post ${post_id} has been deleted!`,
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", success: false, error: error });
+  }
+};
+
+// Get all posts
+export const get_Posts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const posts_result = await posts.findAll();
+    if(posts_result.length === 0){
+      res.status(200).json({
+      message: 'There are not posts in database',
+      success: true,
+    });
+    }
+    res.status(200).json({
+      posts: posts_result,
       success: true,
     });
   } catch (error) {

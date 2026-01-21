@@ -11,7 +11,7 @@ const { val_existanceUser_register, val_existanceUser_login, val_existanceUser_p
 // Validate token
 const { validate_token } = require("../middlewares/validate_token");
 // Controllers
-const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, get_userReposts, unlike_post, unlike_comment, delete_comment, delete_repost, delete_post, } = require("../controllers/controllers");
+const { register_user, login_user, create_post, like_post, create_comment, like_comment, create_repost, get_userPosts, get_postComments, get_postLikes, get_commentLikes, get_userReposts, unlike_post, unlike_comment, delete_comment, delete_repost, delete_post, get_Posts, } = require("../controllers/controllers");
 ////////////////////////////////////////
 // Routes of the backend application //
 // Register new user on application
@@ -48,4 +48,6 @@ router.delete("/delete_comment/:comment_id ", validate_deleteComment, validate_r
 router.delete("/delete_repost/:post_id", validate_deleteRepost, validate_results, val_existance_repostParams, validate_token, delete_repost);
 // Delete a post
 router.delete("/delete_post/:post_id", validate_deletePost, validate_results, val_existance_postParams, validate_token, delete_post);
+// Get all posts
+router.get("/posts", get_Posts);
 module.exports = router;
