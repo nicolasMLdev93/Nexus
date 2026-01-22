@@ -1,3 +1,5 @@
+# Nexus:
+
 Nexus es una aplicación backend de microblogging que replica las funcionalidades principales de redes sociales modernas. 
 Desarrollada con TypeScript y una arquitectura robusta, permite la creación de posts, comentar dichos posts, dar likes y hacer re-posteos de los mismos.
 Implementa tecnologías como Node.js + Express para gestionar las diferentes rutas de acción y Sequelize como ORM para conectar las bases de datos relacionales con la aplicación backend, lo cual hace el proyecto
@@ -41,7 +43,7 @@ tsc
 Ejecutar tests:
 npm test
 
-# Ejemplo para ejecutar una acción luego de estar loggeado:
+Ejemplo para ejecutar una acción luego de estar loggeado:
 Authorization: Bearer {token}
 Content-Type: application/json
 
