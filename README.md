@@ -23,20 +23,23 @@ Características Principales:
 * Consultas eficientes con Sequelize ORM
 * Escalabilidad
 
-# Versión Node.js 18 o superior:
+Versión Node.js 18 o superior:
 node --version
 
-# Correr el servidor local:
+Correr el servidor local:
 cd api y luego node index.js
 
-# Ejecutar migraciones con Sequelize:
+Ejecutar migraciones con Sequelize:
 npx sequelize-cli db:migrate
 
-# Crear una nueva migración:
+Crear una nueva migración:
 npx sequelize-cli migration:generate --name nombre-migracion --attributes (todos los atributos con los tipos de datos de cada uno de ellos);
 
-# Compilar TypeScript:
+Compilar TypeScript:
 tsc
+
+Ejecutar tests:
+npm test
 
 # Ejemplo para ejecutar una acción luego de estar loggeado:
 Authorization: Bearer {token}
