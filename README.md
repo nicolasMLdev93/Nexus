@@ -47,4 +47,4 @@ Ejemplo para ejecutar una acción luego de estar loggeado:
 Authorization: Bearer {token}
 Content-Type: application/json
 
-⭐ ¡Dale una estrella al proyecto si te gusta! ⭐
+⭐ ¡Dale una estrella al proyecto si te gusta! 
