@@ -8,7 +8,7 @@ export const validate_newUser: ValidationChain[] = [
     .isString()
     .withMessage("Email must be a string")
     .isLength({ max: 40 })
-    .withMessage("The max length of your email must be 100 char"),
+    .withMessage("The max length of your email must be 40 chars"),
   body("password")
     .notEmpty()
     .withMessage("Password is required!")
@@ -54,7 +54,7 @@ export const validate_loginUser: ValidationChain[] = [
     .isString()
     .withMessage("Email must be a string")
     .isLength({ max: 40 })
-    .withMessage("The max length of your email must be 100 char"),
+    .withMessage("The max length of your email must be 40 chars"),
   body("password")
     .notEmpty()
     .withMessage("Password is required!")

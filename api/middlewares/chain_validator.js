@@ -10,7 +10,7 @@ exports.validate_newUser = [
         .isString()
         .withMessage("Email must be a string")
         .isLength({ max: 40 })
-        .withMessage("The max length of your email must be 100 char"),
+        .withMessage("The max length of your email must be 40 chars"),
     (0, express_validator_1.body)("password")
         .notEmpty()
         .withMessage("Password is required!")
@@ -56,7 +56,7 @@ exports.validate_loginUser = [
         .isString()
         .withMessage("Email must be a string")
         .isLength({ max: 40 })
-        .withMessage("The max length of your email must be 100 char"),
+        .withMessage("The max length of your email must be 40 chars"),
     (0, express_validator_1.body)("password")
         .notEmpty()
         .withMessage("Password is required!")
