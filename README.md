@@ -1,51 +1,68 @@
-# Nexus:
+🚀 Nexus
 
-Nexus es una aplicación backend de microblogging que replica las funcionalidades principales de redes sociales modernas. 
-Desarrollada con TypeScript y una arquitectura robusta, permite la creación de posts, comentar dichos posts, dar likes y hacer re-posteos de los mismos.
-Implementa tecnologías como Node.js + Express para gestionar las diferentes rutas de acción y Sequelize como ORM para conectar las bases de datos relacionales con la aplicación backend, lo cual hace el proyecto
-sumamente escalable y fácil de manipular con total seguridad.
-Las bases de datos MySQL están desplegadas en Clever Cloud, asegurando un entorno de producción robusto, escalable y con mantenimiento automatizado, lo que garantiza un tiempo de actividad óptimo.
+🧠 Descripción:
+Nexus es una API backend de microblogging que replica las funcionalidades principales de redes sociales modernas, permitiendo a los usuarios interactuar mediante publicaciones, comentarios y reacciones.
+La aplicación está desarrollada con TypeScript y sigue una arquitectura escalable basada en:
+- Node.js + Express para la gestión de rutas y lógica de negocio.
+- Sequelize como ORM para la interacción con bases de datos relacionales.
+MySQL desplegado en Clever Cloud, garantizando alta disponibilidad y mantenimiento automatizado.
+Su diseño modular facilita la extensión del sistema, permitiendo incorporar nuevas funcionalidades de forma segura y eficiente.
 
-Características Principales:
+✨ Características principales:
+📝 Publicaciones
+- Crear, editar y eliminar posts
+- Sistema de re-posts (similar a retweets)
+- Límite de caracteres configurable
+- Sistema de comentarios en publicaciones
+- Interacciones mediante “likes”
 
-📝 Publicaciones:
-* Crear, editar y eliminar posts
-* Sistema de re-posts (retweets)
-* Límite de caracteres configurable
+🔐 Autenticación y Seguridad
+- Registro e inicio de sesión seguro
+- Autenticación basada en JWT (JSON Web Tokens)
+- Contraseñas encriptadas con bcrypt
+- Middlewares de autorización por roles
+- Protección frente a ataques comunes (validaciones, control de acceso)
 
-🔐 Autenticación y Seguridad:
-* Registro e inicio de sesión seguro
-* Tokens JWT para autenticación
-* Contraseñas encriptadas con bcrypt
-* Middlewares de autorización
-* Protección contra ataques comunes
+🗄️ Base de Datos
+- Modelos relacionales optimizados
+- Uso de migraciones y seeders
+- Consultas eficientes con Sequelize
+- Alta escalabilidad y mantenimiento sencillo
 
-🗄️ Base de Datos:
-* Modelos relacionales optimizados
-* Migraciones y seeders
-* Consultas eficientes con Sequelize ORM
-* Escalabilidad
+⚙️ Requisitos
+Node.js v18 o superior
+Verificar versión: node --version
 
-Versión Node.js 18 o superior:
-node --version
+🚀 Instalación y ejecución:
+📦 Ejecutar servidor local:
+cd api
+node index.js
 
-Correr el servidor local:
-cd api y luego node index.js
+🗄️ Base de datos (Sequelize)
+Ejecutar migraciones:
+npx sequelize-cli migration:generate --name nombre-migracion
+🔧 Compilar TypeScript: tsc
 
-Ejecutar migraciones con Sequelize:
-npx sequelize-cli db:migrate
+🧪 Ejecutar tests: npm test
 
-Crear una nueva migración:
-npx sequelize-cli migration:generate --name nombre-migracion --attributes (todos los atributos con los tipos de datos de cada uno de ellos);
+🏗️ Arquitectura:
+🔙 Backend
+- Lenguaje: TypeScript
+- Entorno: Node.js
+- Framework: Express.js
+- ORM: Sequelize
+- Autenticación: JWT
 
-Compilar TypeScript:
-tsc
+☁️ Infraestructura
+Base de datos: MySQL
+Proveedor: Clever Cloud
+Características:
+- Backups automáticos
+- Alta disponibilidad
+- Escalabilidad automática
 
-Ejecutar tests:
-npm test
-
-Ejemplo para ejecutar una acción luego de estar loggeado:
-Authorization: Bearer {token}
-Content-Type: application/json
-
-⭐ ¡Dale una estrella al proyecto si te gusta! 
+📌 Este proyecto fue desarrollado aplicando buenas prácticas de ingeniería de software:
+- Separación de responsabilidades
+- Arquitectura escalable
+- Código tipado y mantenible
+- Seguridad en autenticación y acceso
